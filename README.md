@@ -1,6 +1,6 @@
 # Chronos IoT (ESP32 + FIWARE Descomplicado)
 
-Projeto do **TCC Chronos** para simulação e integração de dispositivos IoT usando **ESP32 + DHT22**, publicando dados via **MQTT Ultralight** no **FIWARE Descomplicado**.
+Projeto do **TCC Chronos** para simulação e integração de dispositivos IoT usando **ESP32 + DHT22**, publicando dados via **MQTT Ultralight** no [Fiware Descomplicado](https://github.com/fabiocabrini/fiware).
 
 O dispositivo simulado lê **temperatura** e **umidade**, envia periodicamente ao **IoT Agent MQTT**, que repassa os dados ao **Orion Context Broker**. O histórico é armazenado pelo **STH-Comet** e pode ser consultado via API.
 
@@ -48,7 +48,7 @@ chronos-iot/
 
 ## Provisionamento no FIWARE
 
-Use a coleção [FIWARE.postman.json](./docs/FIWARE.postman.json) (importar no Postman ou Insomnia). A ordem dos requests é:
+Use a coleção [FIWARE.postman.json](./docs/FIWARE.postman.json) (importar no Postman ou Insomnia). Execute as requisições na ordem sugerida no arquivo, conforme exemplo abaixo:
 
 1. **Health Check**
 
@@ -58,7 +58,7 @@ Use a coleção [FIWARE.postman.json](./docs/FIWARE.postman.json) (importar no P
 
 2. **Criar Service Group**
 
-   ```http
+   ```
    POST http://<IP_VM>:4041/iot/services
    Headers:
      fiware-service: smart
