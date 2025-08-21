@@ -1,0 +1,579 @@
+{
+	"info": {
+		"_postman_id": "a42de80e-eda9-48a4-ab08-2c2be8957bbc",
+		"name": "FIWARE Descomplicado Chronos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44481140",
+		"_collection_link": "https://solar-escape-5594576.postman.co/workspace/Vin%C3%ADcius-Benevides's-Workspace~74a13d43-229b-4969-85f1-01a6a9d57703/collection/44481140-a42de80e-eda9-48a4-ab08-2c2be8957bbc?action=share&source=collection_link&creator=44481140"
+	},
+	"item": [
+		{
+			"name": "1 Health Check",
+			"item": [
+				{
+					"name": "1.1 IOT Agent MQTT - Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/about",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"about"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 STH-Comet - Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:8666/version",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "8666",
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Orion Contex Broker - Version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}:1026/version",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2 Create Service Group",
+			"item": [
+				{
+					"name": "2.1 IOT Agent MQTT - Provisioning a Service Group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"services\": [\n   {\n     \"apikey\":      \"TEF\",                  // Chave de acesso para o serviço (API Key)\n     \"cbroker\":     \"http://{{url}}:1026\",  // URL do Orion Context Broker associado ao serviço\n     \"entity_type\": \"Sensor\",               // Tipo de entidade associado ao serviço\n     \"resource\":    \"\"                      // Recurso associado ao serviço (pode estar vazio)\n   }\n ]\n}\n"
+						},
+						"url": {
+							"raw": "http://{{url}}:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 IOT Agent MQTT - Get Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3 Create Device and Entities",
+			"item": [
+				{
+					"name": "3.1 IOT Agent MQTT - Provisioning DHT22 Sensor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"devices\": [\n    {\n      \"device_id\": \"esp32-chronos01\",                   // Identificador único do dispositivo\n      \"entity_name\": \"urn:ngsi-ld:Chronos:ESP32:001\",   // Nome da entidade para o dispositivo (formato URN)\n      \"entity_type\": \"Sensor\",                          // Tipo da entidade (neste caso, \"Lamp\")\n      \"protocol\": \"PDI-IoTA-UltraLight\",                // Protocolo usado para a comunicação (no exemplo, PDI-IoTA-UltraLight)\n      \"transport\": \"MQTT\",                              // Método de transporte (neste caso, MQTT)\n\n      // Lista de atributos associados ao dispositivo\n      \"attributes\": [\n        { \"object_id\": \"t\", \"name\": \"temperature\", \"type\": \"Number\" },\n        { \"object_id\": \"h\", \"name\": \"humidity\",    \"type\": \"Number\" }\n      ]\n    }\n  ]\n}\n"
+						},
+						"url": {
+							"raw": "http://{{url}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 IOT Agent MQTT - List all Devices Provisioned",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 STH-Comet - Subscribe Sensor changes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"otify STH-Comet of temperature and humidity changes\", // Descrição da notificação\r\n  \"subject\": {\r\n    \"entities\": [\r\n      {\r\n        \"id\": \"urn:ngsi-ld:Chronos:ESP32:001\",\r\n        \"type\": \"Sensor\"\r\n      }\r\n    ],\r\n    \"condition\": { \"attrs\": [\"temperature\",\"humidity\"] } // Condição para acionar a notificação\r\n  },\r\n  \"notification\": {\r\n    \"http\": {\r\n      \"url\": \"http://{{url}}:8666/notify\" // URL para notificação do STH-Comet\r\n    },\r\n    \"attrs\": [\"temperature\",\"humidity\"],\r\n    \"attrsFormat\": \"legacy\" // Formato dos atributos a ser notificado (legado)\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.4 Orion Context Broker - Create Entity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"urn:ngsi-ld:Chronos:ESP32:001\",\r\n    \"type\": \"Sensor\",\r\n    \"temperature\": {\r\n        \"type\": \"float\",\r\n        \"value\": 0\r\n    },\r\n    \"humidity\": {\r\n        \"type\": \"float\",\r\n        \"value\": 0\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						},
+						"description": "cria entidade"
+					},
+					"response": []
+				},
+				{
+					"name": "3.5 Orion Context Broker - Get Entity",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4 Request Data",
+			"item": [
+				{
+					"name": "4.1 STH-Comet - Request DHT 22 Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:8666/STH/v1/contextEntities/type/:type/id/:id/attributes/:attribute?lastN=30",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "8666",
+							"path": [
+								"STH",
+								"v1",
+								"contextEntities",
+								"type",
+								":type",
+								"id",
+								":id",
+								"attributes",
+								":attribute"
+							],
+							"query": [
+								{
+									"key": "hLimit",
+									"value": "100",
+									"description": "Este parâmetro limita o número máximo de resultados retornados em uma única consulta de histórico. No exemplo, está configurado para 100, o que significa que, no máximo, 100 pontos de dados serão retornados em uma única solicitação.",
+									"disabled": true
+								},
+								{
+									"key": "hOffset",
+									"value": "1",
+									"description": "Define o deslocamento da consulta. É usado para recuperar resultados além do limite. No exemplo, está configurado como 1, o que significa que a consulta começará a partir do segundo resultado (ignorando o primeiro resultado).",
+									"disabled": true
+								},
+								{
+									"key": "lastN",
+									"value": "30",
+									"description": "Especifica o número de resultados mais recentes a serem recuperados. Neste caso, está configurado como 20, o que resultará na recuperação dos 20 dados mais recentes."
+								},
+								{
+									"key": "aggrMethod",
+									"value": "occur",
+									"description": "Define o método de agregação utilizado nos resultados. No exemplo, está configurado como 'occur', sugerindo que a agregação é feita com base na ocorrência dos eventos.",
+									"disabled": true
+								},
+								{
+									"key": "aggrPeriod",
+									"value": "hour",
+									"description": "Define o período de agregação. Neste caso, está configurado para 'hour' (hora), o que sugere que os dados estão sendo agregados em intervalos de hora.",
+									"disabled": true
+								},
+								{
+									"key": "dateFrom",
+									"value": "2023-08-02T18:28:21.237",
+									"description": "Formato UTC",
+									"disabled": true
+								},
+								{
+									"key": "dateTo",
+									"value": "2023-08-03T10:28:21.237",
+									"description": "Formato UTC",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "type",
+									"value": "Sensor"
+								},
+								{
+									"key": "id",
+									"value": "urn:ngsi-ld:Chronos:ESP32:001"
+								},
+								{
+									"key": "attribute",
+									"value": "temperature"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5 Delete Resources",
+			"item": [
+				{
+					"name": "5.1 IOT Agent MQTT - Delete Sensor",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}:4041/iot/devices/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "esp32-chronos01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 Orion Context Broker - Delete Entity",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://{{url}}:1026/v2/entities/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								":id"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Thing",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "urn:ngsi-ld:Chronos:ESP32:001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 IOT Agent MQTT - Delete Service Group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "smart"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{url}}:4041/iot/services/?resource=&apikey=TEF",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "resource",
+									"value": "",
+									"description": "The path that the IoT Agent had been listening on"
+								},
+								{
+									"key": "apikey",
+									"value": "TEF"
+								}
+							]
+						},
+						"description": "This example removes a provisioned service group by making a DELETE request to the `/iot/services/` endpoint.\n\nIt means that requests to `http://iot-agent:7896/iot/d?i=<device_id>&k=4jggokgpepnvsb2uv4s40d59ov`\n(where the IoT Agent is listening for **Northbound** communications) should no longer be processed by the IoT Agent. \nThe `apiKey` and `resource` parameters must be supplied in order to identify the service group to be deleted."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
