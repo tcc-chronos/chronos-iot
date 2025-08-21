@@ -44,6 +44,8 @@ chronos-iot/
 4. Clique em **Play** para iniciar a simulação.
 5. O console serial mostrará logs do Wi-Fi, conexão MQTT e publicações do sensor.
 
+<img width="370" height="414" alt="image" src="https://github.com/user-attachments/assets/9e092e81-794a-4f4c-ba48-9f37ea7c882c" />
+
 ---
 
 ## Provisionamento no FIWARE
